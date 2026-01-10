@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notre savoir-faire – F.S.A</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda&family=Montserrat&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue-night:#0b1f33;
+  --white:#ffffff;
+  --off-white:#f3f4f6;
+  --gray-light:#e5e7eb;
+  --gray-text:#6b7280;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Montserrat', sans-serif;
+  background:var(--off-white);
+  color:#111827;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ANIMATION */
+.fade-in{
+  opacity:0;
+  transform:translateY(25px);
+  animation:fadeUp 0.9s ease forwards;
+}
+
+@keyframes fadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* HEADER */
+header{
+  background:var(--blue-night);
+  color:white;
+  padding:2.5rem 2rem;
+  text-align:center;
+  position:relative;
+}
+
+header h1{
+  font-family:'Bodoni Moda', serif;
+  font-size:2.6rem;
+  letter-spacing:1px;
+}
+
+/* BOUTON RETOUR */
+.btn-home{
+  position:absolute;
+  top:20px;
+  left:25px;
+  padding:0.6rem 1.2rem;
+  border-radius:20px;
+  border:2px solid rgba(255,255,255,0.7);
+  color:white;
+  font-weight:600;
+  text-decoration:none;
+  transition:0.3s;
+  z-index:100; /* <- ajouté */
+}
+
+header h1{
+  font-family:'Bodoni Moda', serif;
+  font-size:2.6rem;
+  letter-spacing:1px;
+  position: relative;
+  z-index: 1;
+}
+
+
+.btn-home:hover{
+  background:white;
+  color:var(--blue-night);
+}
+
+/* CONTENT */
+.main{
+  max-width:900px;
+  margin:4rem auto;
+  padding:0 2rem;
+}
+
+.title{
+  text-align:center;
+  font-size:1.6rem;
+  font-weight:700;
+  color:var(--blue-night);
+  margin-bottom:2.5rem;
+}
+
+.text{
+  background:white;
+  padding:3rem;
+  border-radius:18px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.08);
+  color:#374151;
+}
+
+.text p{
+  margin-bottom:1.7rem;
+  font-size:1.05rem;
+}
+
+.text strong{
+  color:var(--blue-night);
+}
+
+/* FOOTER */
+footer{
+  margin-top:5rem;
+  background:#081726;
+  color:#d1d5db;
+  text-align:center;
+  padding:2rem;
+  font-size:0.9rem;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  header h1{font-size:2.1rem}
+  .title{font-size:1.3rem}
+  .text{padding:2rem}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="index.html" class="btn-home">← Accueil</a>
+  <h1 class="fade-in">Notre savoir-faire</h1>
+</header>
+
+<main class="main fade-in" style="animation-delay:0.2s">
+
+  <div class="title">
+    Nous sommes régulièrement retenus pour les solutions à la fois techniques,
+    esthétiques, sécuritaires et tarifaires que nous savons apporter à nos clients.
+  </div>
+
+  <div class="text">
+    <p>
+      Notre entreprise <strong>« Fenêtres – Stores – Agencements (F.S.A) »</strong>, reste fidèle à son mode opératoire :
+      (<strong>Respect, Obligation, Exigence, Réactivité, Qualité, Discrétion et Résultat</strong>),
+      une méthodologie imposée par ses dirigeants et mise en œuvre par l'ensemble de ses collaborateurs
+      avec plus de <strong>36 années d’expérience</strong>.
+    </p>
+
+    <p>
+      Le devoir de conseil, la faisabilité, l’exigence, les solutions techniques et financières,
+      la transparence, la qualité des produits, le respect des délais, le suivi du client,
+      la réactivité, l’accueil, la disponibilité, la discrétion, le respect des mises en œuvre,
+      l’esthétique, la satisfaction et les garanties sont tout simplement la priorité de
+      <strong>« Fenêtres – Stores – Agencements (F.S.A) »</strong>.
+    </p>
+
+    <p>
+      Toute l’équipe de <strong>« Fenêtres – Stores – Agencements (F.S.A) »</strong> vous réserve
+      le meilleur accueil et aura le plaisir de mettre toutes ses compétences à votre service.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  © 2025 F.S.A – Fenêtre, Stores & Agencement
+</footer>
+
+</body>
+</html>
