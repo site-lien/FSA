@@ -602,7 +602,7 @@ body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor input,b
           </div>
           <div class="exp-item reveal" style="--d:2">
             <svg class="ic"><use href="#ic-check"/></svg>
-            <div><h4>Marques reconnues du secteur</h4><p>Motorisations et mécanismes compatibles avec les grandes marques du marché (Somfy, Bubendorff, Nice…).</p></div>
+            <div><h4>Marques reconnues du secteur</h4><p>Motorisations et mécanismes compatibles avec les grandes marques du marché (Somfy, Franciaflex, Picard…).</p></div>
           </div>
           <div class="exp-item reveal" style="--d:3">
             <svg class="ic"><use href="#ic-check"/></svg>
@@ -873,7 +873,7 @@ Merci à Mattias et Seb pour leur professionnalisme, leurs conseils et leur sér
   "use strict";
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
+ 
   /* ---------- Build preloader + hero shutter slats ---------- */
   function buildSlats(container, count){
     var frag = document.createDocumentFragment();
@@ -940,7 +940,7 @@ Merci à Mattias et Seb pour leur professionnalisme, leurs conseils et leur sér
     document.addEventListener('mouseout', function(e){
       if(e.target.closest('a,button,.gal-tile,input,textarea,select,.filter-btn')){ ring.classList.remove('is-active'); }
     });
-  }
+  } /*EHHH REGI*/
 
   /* ---------- Header scroll state ---------- */
   var header = document.getElementById('header');
