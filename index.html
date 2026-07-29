@@ -9,37 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!--
-====================================================================
- SITE VITRINE — FSA (Fenêtres · Stores · Agencements)
-====================================================================
- COMMENT AJOUTER VOS PROPRES PHOTOS ET VOTRE LOGO
- --------------------------------------------------
- Créez un dossier "images" juste à côté de ce fichier .html, et
- déposez-y des fichiers portant EXACTEMENT ces noms :
-
-   logo.png              -> votre logo (fond transparent, ~240x80px)
-   hero.jpg               -> grande photo (façade / chantier), 1600x1200px environ
-   equipe.jpg              -> photo d'équipe ou d'atelier
-   realisation-1.jpg ... realisation-8.jpg  -> vos photos de chantiers
-
- Tant qu'un fichier n'existe pas, un joli visuel de remplacement
- (dégradé + icône) s'affiche automatiquement à sa place : le site
- fonctionne donc très bien dès maintenant, et devient encore mieux
- au fur et à mesure que vous ajoutez vos vraies photos.
-
- À PERSONNALISER AVANT MISE EN LIGNE
- --------------------------------------------------
- - Les coordonnées (adresse, téléphone, email, horaires) tout en bas
-   de ce fichier, section CONTACT (cherchez "À MODIFIER").
- - Les avis clients : ce sont actuellement des exemples fictifs.
- - Le formulaire de contact ne fait, pour l'instant, qu'afficher un
-   message de confirmation : il n'envoie pas encore un vrai email.
-   Reliez-le à un service comme Formspree, EmailJS ou Netlify Forms
-   (voir le commentaire juste au-dessus du <form>).
-====================================================================
--->
-
 <style>
 /* =====================================================
    0. RESET & TOKENS
@@ -152,9 +121,7 @@ body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor input,b
 .brand-mark{font-family:var(--ff-display);font-size:26px;letter-spacing:.02em;line-height:1;}
 .brand-mark span{color:var(--accent);}
 .brand-tag{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.16em;color:var(--on-dark-muted);text-transform:uppercase;border-left:1px solid var(--line-dark);padding-left:10px;line-height:1.3;}
-/* Pour utiliser votre propre fichier logo.png a la place du texte, decommentez : */
-/* .brand-mark, .brand-tag{display:none;} */
-/* <img src="images/logo.png" alt="FSA" style="height:42px;width:auto"> */
+.brand-logo-img{height:44px;width:auto;}
 
 .nav-desktop{display:flex;align-items:center;gap:38px;}
 .nav-links{display:flex;gap:32px;}
@@ -281,11 +248,23 @@ body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor input,b
 .filter-btn:hover{color:var(--on-dark);border-color:var(--on-dark);}
 .filter-btn.is-active{background:var(--accent);border-color:var(--accent);color:var(--ink);}
 .gal-grid{columns:4 260px;column-gap:16px;}
-.gal-tile{position:relative;display:block;break-inside:avoid;margin-bottom:16px;border-radius:var(--r-m);overflow:hidden;background:linear-gradient(155deg,var(--ink-3),var(--ink-2));cursor:pointer;transition:opacity .4s,transform .4s var(--ease);}
+.gal-tile{position:relative;display:block;break-inside:avoid;margin-bottom:16px;border-radius:var(--r-m);overflow:hidden;background:linear-gradient(155deg,var(--ink-3),var(--ink-2));transition:opacity .4s;}
 .gal-tile.is-hidden{display:none;}
-.gal-photo{display:block;width:100%;height:auto;transition:transform .6s var(--ease);}
-.gal-tile:hover .gal-photo{transform:scale(1.07);}
-.gal-caption{position:absolute;left:0;right:0;bottom:0;padding:18px;background:linear-gradient(0deg,rgba(18,24,29,.9),transparent);transform:translateY(8px);opacity:.85;transition:.4s var(--ease);}
+.gal-carousel{position:relative;}
+.gal-photo{display:none;width:100%;height:auto;}
+.gal-photo.is-active{display:block;}
+.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:rgba(18,24,29,.6);border:1px solid var(--line-dark);color:var(--on-dark);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s,background .3s;z-index:2;}
+.gal-tile:hover .gal-nav{opacity:1;}
+.gal-nav.is-hidden{display:none;}
+.gal-nav:hover{background:var(--accent);color:var(--ink);border-color:var(--accent);}
+.gal-nav .ic{width:16px;height:16px;}
+.gal-nav-prev{left:10px;}
+.gal-nav-next{right:10px;}
+.gal-dots{position:absolute;left:0;right:0;top:12px;display:flex;justify-content:center;gap:6px;z-index:2;}
+.gal-dots.is-hidden{display:none;}
+.gal-dots span{width:6px;height:6px;border-radius:50%;background:rgba(236,238,232,.45);transition:.3s;}
+.gal-dots span.is-active{background:var(--on-dark);width:16px;border-radius:3px;}
+.gal-caption{position:absolute;left:0;right:0;bottom:0;padding:18px;background:linear-gradient(0deg,rgba(18,24,29,.9),transparent);transform:translateY(8px);opacity:.85;transition:.4s var(--ease);pointer-events:none;}
 .gal-caption b{display:block;font-family:var(--ff-head);font-weight:700;font-size:15px;}
 .gal-caption span{font-family:var(--ff-mono);font-size:10.5px;color:var(--on-dark-muted);text-transform:uppercase;letter-spacing:.06em;}
 .gal-tile:hover .gal-caption{transform:translateY(0);opacity:1;}
@@ -459,6 +438,7 @@ body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor input,b
 <header class="header" id="header">
   <div class="wrap">
     <a href="#hero" class="brand">
+      <img src="images/logo.png" alt="FSA — Fenêtres, Stores & Agencements" class="brand-logo-img">
       <span class="brand-mark">FS<span>A</span></span>
       <span class="brand-tag">Fenêtres<br>Stores & Agencements</span>
     </a>
@@ -676,14 +656,84 @@ body.has-cursor,body.has-cursor a,body.has-cursor button,body.has-cursor input,b
         <button class="filter-btn" data-filter="fenetre">Fenêtres</button>
       </div>
       <div class="gal-grid" id="galGrid">
-        <div class="gal-tile reveal" style="--d:0" data-cat="volet"><img class="gal-photo" src="images/realisation-1.png" alt="Volet roulant solaires — Rénovation énergétique"><div class="gal-caption"><b>Volet roulant solaires</b><span>Rénovation énergétique</span></div></div>
-        <div class="gal-tile reveal" style="--d:1" data-cat="fenetre"><img class="gal-photo" src="images/realisation-2.png" alt="Fenêtres PVC — Double vitrage"><div class="gal-caption"><b>Fenêtres PVC</b><span>Double vitrage</span></div></div>
-        <div class="gal-tile reveal" style="--d:2" data-cat="portail"><img class="gal-photo" src="images/realisation-3.png" alt="Portail coulissant — Motorisé, propriété privée"><div class="gal-caption"><b>Portail coulissant</b><span>Motorisé — propriété privée</span></div></div>
-        <div class="gal-tile reveal" style="--d:0" data-cat="store"><img class="gal-photo" src="images/realisation-4.png" alt="Store banne — Balcon"><div class="gal-caption"><b>Store banne</b><span>Balcon</span></div></div>
-        <div class="gal-tile reveal" style="--d:1" data-cat="garage"><img class="gal-photo" src="images/realisation-5.png" alt="Porte de garage sectionnelle — Motorisée, maison"><div class="gal-caption"><b>Porte de garage sectionnelle</b><span>Motorisée — maison</span></div></div>
-        <div class="gal-tile reveal" style="--d:2" data-cat="volet"><img class="gal-photo" src="images/realisation-6.png" alt="Porte de maison — Rénovation, maison individuelle"><div class="gal-caption"><b>Porte de maison</b><span>Rénovation — maison individuelle</span></div></div>
-        <div class="gal-tile reveal" style="--d:0" data-cat="fenetre"><img class="gal-photo" src="images/realisation-7.png" alt="Baie vitrée — Extension, séjour"><div class="gal-caption"><b>Baie vitrée</b><span>Extension — séjour</span></div></div>
-        <div class="gal-tile reveal" style="--d:1" data-cat="portail"><img class="gal-photo" src="images/realisation-8.png" alt="Extension vitrée — PVC, sur mesure"><div class="gal-caption"><b>Extension vitrée</b><span>PVC — sur mesure</span></div></div>
+        <div class="gal-tile reveal" style="--d:0" data-cat="volet">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-1.png" alt="Volet roulant solaires — Rénovation énergétique">
+            <!-- Ajoutez ici d'autres <img class="gal-photo"> pour faire défiler plusieurs photos dans cette même case -->
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Volet roulant solaires</b><span>Rénovation énergétique</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:1" data-cat="fenetre">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-2.png" alt="Fenêtres PVC — Double vitrage">
+            <img class="gal-photo" src="images/realisation-10.png" alt="Fenêtres PVC — Double vitrage">
+            <img class="gal-photo" src="images/realisation-12.png" alt="Fenêtres PVC — Double vitrage">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Fenêtres PVC</b><span>Double vitrage</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:2" data-cat="portail">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-3.png" alt="Portail coulissant — Motorisé, propriété privée">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Portail coulissant</b><span>Motorisé — propriété privée</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:0" data-cat="store">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-4.png" alt="Store banne — Balcon">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Store banne</b><span>Balcon</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:1" data-cat="garage">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-5.png" alt="Porte de garage">
+            <img class="gal-photo" src="images/realisation-11.png" alt="porte de garage sectionnelle">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Porte de garage</b><span>Motorisée — parking</span></div>
+          
+        </div>
+        <div class="gal-tile reveal" style="--d:2" data-cat="volet">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-6.png" alt="Porte de maison — Rénovation, maison individuelle">
+            <img class="gal-photo" src="images/realisation-9.png" alt="Porte de maison">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Porte de maison</b><span>Rénovation — maison individuelle</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:0" data-cat="fenetre">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-7.png" alt="Baie vitrée — Extension, séjour">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Baie vitrée</b><span>Extension — séjour</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:1" data-cat="portail">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-8.png" alt="Extension vitrée — PVC, sur mesure">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Extension vitrée</b><span>PVC — sur mesure</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -861,7 +911,7 @@ Merci à Mattias et Seb pour leur professionnalisme, leurs conseils et leur sér
     </div>
     <div class="footer-bottom">
       <span>© <span id="year"></span> FSA — Fenêtres Stores Agencements. Tous droits réservés.</span>
-      <span>© <span id="year"></span> Creasite 2026</span>
+      <span>© <span id="year"></span> Sicreete 2026</span>
     </div>
   </div>
 </footer>
@@ -1034,6 +1084,37 @@ Merci à Mattias et Seb pour leur professionnalisme, leurs conseils et leur sér
         t.classList.toggle('is-hidden', !show);
       });
     });
+  });
+
+  /* ---------- Per-tile photo carousels ---------- */
+  tiles.forEach(function(tile){
+    var photos = tile.querySelectorAll('.gal-photo');
+    var prevBtn = tile.querySelector('.gal-nav-prev');
+    var nextBtn = tile.querySelector('.gal-nav-next');
+    var dotsWrap = tile.querySelector('.gal-dots');
+    var idx = 0;
+
+    if(photos.length <= 1){
+      if(prevBtn) prevBtn.classList.add('is-hidden');
+      if(nextBtn) nextBtn.classList.add('is-hidden');
+      if(dotsWrap) dotsWrap.classList.add('is-hidden');
+      return;
+    }
+
+    photos.forEach(function(p, i){
+      var d = document.createElement('span');
+      if(i === 0) d.classList.add('is-active');
+      dotsWrap.appendChild(d);
+    });
+
+    function show(i){
+      idx = (i + photos.length) % photos.length;
+      photos.forEach(function(p, pi){ p.classList.toggle('is-active', pi === idx); });
+      dotsWrap.querySelectorAll('span').forEach(function(d, di){ d.classList.toggle('is-active', di === idx); });
+    }
+
+    if(prevBtn) prevBtn.addEventListener('click', function(e){ e.stopPropagation(); show(idx - 1); });
+    if(nextBtn) nextBtn.addEventListener('click', function(e){ e.stopPropagation(); show(idx + 1); });
   });
 
   /* ---------- Testimonials carousel ---------- */
