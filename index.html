@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FSA — Fenêtres, Stores & Agencements | Fermetures sur mesure</title>
+<meta name="description" content="FSA conçoit, fabrique et installe vos fenêtres, volets roulants, stores, motorisations, portails et portes de garage sur mesure. Devis gratuit.">
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="apple-touch-icon" href="images/logo.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="FSA — Fenêtres, Stores & Agencements">
+<meta property="og:description" content="FSA conçoit, fabrique et installe vos fenêtres, volets roulants, stores, motorisations, portails et portes de garage sur mesure. Devis gratuit.">
+<meta property="og:image" content="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================
+   0. RESET & TOKENS
+   ===================================================== */
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;}
+img{max-width:100%;display:block;}
+button,input,textarea,select{font:inherit;color:inherit;}
+a{color:inherit;text-decoration:none;}
+ul{margin:0;padding:0;list-style:none;}
+h1,h2,h3,h4,p{margin:0;}
+svg{display:block;}
+
+:root{
+  --ink:#A5A5A5;
+  --ink-2:#767677;
+  --ink-3:#7a7a7a;
+  --paper:#EEF0EA;
+  --paper-2:#E2E5DC;
+  --metal:#9AA7AD;
+  --metal-dark:#576067;
+  --accent:#0c1f38;
+  --accent-bg:#0c1f38;
+  --accent-dim:#fa1f1f;
+  --fs-navy:#0c1f38;
+  --steel:#254a78;
+  --on-dark:#ECEEE8;
+  --on-dark-muted:#252525;
+  --on-light:#12181D;
+  --on-light-muted:#3a4550;
+  --line-dark:rgba(236,238,232,.14);
+  --line-light:rgba(18,24,29,.12);
+  --r-s:8px;--r-m:16px;--r-l:30px;
+  --ease:cubic-bezier(.16,.84,.44,1);
+  --ff-display:'Archivo Black',sans-serif;
+  --ff-head:'Archivo',sans-serif;
+  --ff-body:'Inter',sans-serif;
+  --ff-mono:'IBM Plex Mono',monospace;
+  --container:1240px;
+}
+
+body{
+  font-family:var(--ff-body);
+  background:var(--paper);
+  color:var(--on-light);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+.wrap{max-width:var(--container);margin:0 auto;padding:0 32px;}
+section{position:relative;}
+.eyebrow{
+  font-family:var(--ff-mono);font-size:12.5px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:600;display:inline-flex;gap:10px;align-items:center;
+}
+.eyebrow::before{content:"";width:18px;height:2px;background:var(--accent-dim);display:inline-block;}
+.btn{
+  font-family:var(--ff-head);font-weight:700;font-size:15px;letter-spacing:.01em;
+  display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:100px;
+  border:1.5px solid transparent;cursor:pointer;transition:transform .35s var(--ease),background .3s,color .3s,border-color .3s;
+  white-space:nowrap;
+}
+.btn:active{transform:scale(.96);}
+.btn-accent{background:var(--accent-bg);color:var(--ink);}
+.btn-accent:hover{background:#ee2828;transform:translateY(-2px);}
+.btn-ghost-dark{border-color:var(--line-dark);color:var(--on-dark);}
+.btn-ghost-dark:hover{border-color:var(--on-dark);background:rgba(236,238,232,.06);transform:translateY(-2px);}
+.btn-ghost-light{border-color:var(--line-light);color:var(--on-light);}
+.btn-ghost-light:hover{border-color:var(--on-light);background:rgba(18,24,29,.05);transform:translateY(-2px);}
+.btn svg{width:16px;height:16px;transition:transform .3s var(--ease);}
+.btn:hover svg{transform:translate(3px,-3px);}
+
+/* reveal-on-scroll */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--d,0) * 80ms);}
+.reveal.is-visible{opacity:1;transform:translateY(0);}
+
+/* =====================================================
+   1. ICONS (sprite defs, referenced with <use>)
+   ===================================================== */
+.ic{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+
+/* =====================================================
+   2. (curseur personnalisé retiré — curseur natif du navigateur)
+   ===================================================== */
+
+/* =====================================================
+   3. PRELOADER (shutter opening)
+   ===================================================== */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--ink);overflow:hidden;transition:transform .95s var(--ease);}
+.loader-shutter{position:absolute;inset:0;display:flex;flex-direction:column;}
+.loader-slat{flex:1;background:linear-gradient(180deg,var(--metal) 0%,var(--metal-dark) 100%);border-bottom:2px solid rgba(0,0,0,.3);transition:transform .8s var(--ease);transition-delay:calc(var(--i) * 28ms);}
+.loader.is-open{transform:translateY(-100%);}
+.loader.is-open .loader-slat{transform:translateY(-115%);}
+.loader-info{position:absolute;left:32px;bottom:32px;display:flex;align-items:baseline;gap:14px;color:var(--on-dark);z-index:2;}
+.loader-pct{font-family:var(--ff-display);font-size:clamp(32px,6vw,64px);}
+.loader-label{font-family:var(--ff-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--on-dark-muted);}
+
+/* =====================================================
+   4. HEADER / NAV
+   ===================================================== */
+.header{position:fixed;top:0;left:0;right:0;z-index:900;padding:22px 0;transition:padding .4s var(--ease),background .4s,box-shadow .4s;}
+.header.is-scrolled{padding:12px 0;background:rgba(18,24,29,.85);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line-dark);}
+.header .wrap{display:flex;align-items:center;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:10px;color:var(--on-dark);}
+.brand-logo-img,.brand-mark,.brand-tag{transition:transform .3s var(--ease);}
+.brand:hover .brand-logo-img,.brand:hover .brand-mark,.brand:hover .brand-tag{transform:scale(1.06);}
+.brand-mark{font-family:var(--ff-display);font-size:26px;letter-spacing:.02em;line-height:1;color:var(--fs-navy);}
+.brand-mark span{color:var(--accent-dim);}
+.brand-tag{font-family:var(--ff-mono);font-size:9.5px;letter-spacing:.16em;color:var(--on-dark-muted);text-transform:uppercase;border-left:1px solid var(--line-dark);padding-left:10px;line-height:1.3;}
+.brand-tag-blue{color:#0c1f38;}
+.brand-tag-red{color:var(--accent-dim);}
+.brand-logo-img{height:44px;width:auto;}
+
+.nav-desktop{display:flex;align-items:center;gap:38px;}
+.nav-links{display:flex;gap:32px;}
+.nav-links a{font-family:var(--ff-head);font-weight:600;font-size:14.5px;color:var(--on-dark);position:relative;padding:4px 0;}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1.5px;background:var(--accent-dim);transition:width .35s var(--ease);}
+.nav-links a:hover::after,.nav-links a.is-active::after{width:100%;}
+.nav-cta{display:flex;align-items:center;gap:18px;}
+.burger{display:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line-dark);background:transparent;align-items:center;justify-content:center;color:var(--on-dark);}
+.burger .ic{width:20px;height:20px;}
+
+.nav-mobile{position:fixed;inset:0;z-index:895;background:var(--ink);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:32px;transform:translateY(-100%);transition:transform .55s var(--ease);}
+.nav-mobile.is-open{transform:translateY(0);}
+.nav-mobile a{font-family:var(--ff-head);font-weight:700;font-size:clamp(28px,8vw,44px);color:var(--on-dark);padding:10px 0;border-bottom:1px solid var(--line-dark);}
+.nav-mobile .btn{margin-top:24px;align-self:flex-start;}
+
+/* =====================================================
+   5. HERO
+   ===================================================== */
+.hero{background:var(--ink);color:var(--on-dark);padding:150px 0 0;overflow:hidden;position:relative;}
+.hero::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(700px 420px at 85% 15%, rgba(255,90,43,.16), transparent 60%),
+  radial-gradient(900px 600px at 5% 90%, rgba(37,74,120,.28), transparent 60%);
+  pointer-events:none;}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative;}
+.hero-eyebrow{color:var(--fs-navy);margin-bottom:22px;}
+.hero h1{font-family:var(--ff-display);font-size:clamp(34px,5vw,64px);line-height:1.04;letter-spacing:-.01em;}
+.hero h1 em{font-style:normal;color:var(--accent-dim);}
+.hero p.lead{font-family:var(--ff-body);font-size:clamp(16px,1.6vw,19px);color:var(--on-dark-muted);max-width:480px;margin-top:24px;}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;margin-top:38px;}
+.hero-stats{display:flex;gap:36px;margin-top:64px;flex-wrap:wrap;}
+.hero-stats div{border-left:2px solid var(--line-dark);padding-left:16px;}
+.hero-stats b{display:block;font-family:var(--ff-display);font-size:clamp(22px,2.6vw,32px);color:var(--on-dark);}
+.hero-stats span{font-family:var(--ff-mono);font-size:11px;color:var(--on-dark-muted);letter-spacing:.06em;text-transform:uppercase;}
+
+/* interactive shutter visual */
+.hero-visual{position:relative;border-radius:var(--r-l);overflow:hidden;background:
+  linear-gradient(160deg,var(--ink-3),var(--ink-2));
+  box-shadow:0 40px 80px rgba(0,0,0,.45);}
+.hero-photo{display:block;width:100%;height:auto;}
+.hero-visual::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(18,24,29,.75),transparent 55%);pointer-events:none;}
+.hero-shutter{position:absolute;inset:0;display:flex;flex-direction:column;z-index:2;transform:translateY(-38%);transition:transform 1.1s var(--ease);}
+.hero-visual.is-open .hero-shutter{transform:translateY(-100%);}
+.hero-slat{flex:1;border-bottom:2px solid rgba(0,0,0,.35);background:linear-gradient(180deg,var(--metal),var(--metal-dark));}
+.hero-caption{position:absolute;left:20px;bottom:20px;z-index:3;font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--on-dark);background:rgba(18,24,29,.55);padding:8px 12px;border-radius:100px;border:1px solid var(--line-dark);}
+.hero-toggle{position:absolute;right:20px;top:20px;z-index:3;font-family:var(--ff-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);background:var(--on-dark);border:none;border-radius:100px;padding:9px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;}
+.hero-toggle .ic{width:14px;height:14px;}
+
+/* =====================================================
+   6. MARQUEE
+   ===================================================== */
+.marquee{background:var(--accent-bg);color:var(--ink);overflow:hidden;padding:16px 0;border-top:1px solid rgba(0,0,0,.12);border-bottom:1px solid rgba(0,0,0,.12);}
+.marquee-track{display:flex;width:max-content;animation:scroll 26s linear infinite;}
+.marquee-track span{font-family:var(--ff-head);font-weight:800;font-size:18px;letter-spacing:.02em;text-transform:uppercase;padding:0 22px;display:flex;align-items:center;gap:22px;white-space:nowrap;}
+.marquee-track span::after{content:"◆";font-size:10px;opacity:.6;}
+@keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.marquee:hover .marquee-track{animation-play-state:paused;}
+
+/* =====================================================
+   7. SECTION HEADS / DIVIDER (dimension line motif)
+   ===================================================== */
+.sec-head{max-width:620px;margin-bottom:56px;}
+.sec-head h2{font-family:var(--ff-display);font-size:clamp(30px,4.2vw,52px);line-height:1.02;margin-top:16px;letter-spacing:-.01em;}
+.sec-pad{padding:120px 0;}
+
+.dim-line{display:flex;align-items:center;gap:14px;margin:0 auto 64px;max-width:var(--container);padding:0 32px;color:var(--on-light-muted);}
+.dim-line .tick{width:1px;height:16px;background:currentColor;flex:none;}
+.dim-line .bar{flex:1;height:1px;background:currentColor;position:relative;transform:scaleX(0);transform-origin:left;transition:transform 1.1s var(--ease);}
+.dim-line.is-visible .bar{transform:scaleX(1);}
+.dim-line small{font-family:var(--ff-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+.on-dark-divider{color:var(--on-dark-muted);}
+
+/* =====================================================
+   8. SERVICES
+   ===================================================== */
+.services{background:var(--paper);}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line-light);border:1px solid var(--line-light);border-radius:var(--r-m);overflow:hidden;}
+.svc-card{background:var(--paper);padding:38px 30px;transition:background .4s var(--ease);position:relative;}
+.svc-card:hover{background:var(--ink);color:var(--on-dark);}
+.svc-card:hover .svc-num,.svc-card:hover .svc-desc{color:var(--on-dark-muted);}
+.svc-icon{width:52px;height:52px;border-radius:50%;background:var(--paper-2);display:flex;align-items:center;justify-content:center;margin-bottom:26px;transition:background .4s,color .4s;}
+.svc-card:hover .svc-icon{background:var(--accent-bg);color:var(--ink);}
+.svc-num{font-family:var(--ff-mono);font-size:12px;color:var(--on-light-muted);letter-spacing:.08em;}
+.svc-card h3{font-family:var(--ff-head);font-weight:800;font-size:22px;margin:14px 0 10px;}
+.svc-desc{font-size:14.5px;color:var(--on-light-muted);line-height:1.55;}
+.svc-link{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-family:var(--ff-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);}
+.svc-card:hover .svc-link{color:var(--on-dark);}
+.svc-link .ic{width:13px;height:13px;transition:transform .3s var(--ease);}
+.svc-card:hover .svc-link .ic{transform:translate(3px,-3px);}
+
+/* =====================================================
+   9. EXPERTISE / STATS
+   ===================================================== */
+.expertise{background:var(--ink-2);color:var(--on-dark);background-image:
+  linear-gradient(180deg, var(--ink-2), var(--ink));}
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start;}
+.exp-list{display:flex;flex-direction:column;gap:26px;margin-top:30px;}
+.exp-item{display:flex;gap:18px;align-items:flex-start;padding-bottom:26px;border-bottom:1px solid var(--line-dark);}
+.exp-item .ic{width:22px;height:22px;color:var(--on-dark);flex:none;margin-top:3px;}
+.exp-item h4{font-family:var(--ff-head);font-weight:700;font-size:17px;margin-bottom:6px;}
+.exp-item p{font-size:14.5px;color:var(--on-dark-muted);}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line-dark);border:1px solid var(--line-dark);border-radius:var(--r-m);overflow:hidden;margin-top:30px;}
+.stat-card{background:var(--ink-2);padding:34px 26px;}
+.stat-num{font-family:var(--ff-display);font-size:clamp(34px,4vw,52px);color:var(--on-dark);display:flex;}
+.stat-label{font-family:var(--ff-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--on-dark-muted);margin-top:8px;}
+
+/* =====================================================
+   10. PROCESS
+   ===================================================== */
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.process-line{position:absolute;top:26px;left:0;right:0;height:1px;background:var(--line-light);}
+.process-line i{position:absolute;top:0;left:0;height:100%;background:var(--accent-bg);width:0;transition:width 1.4s var(--ease);}
+.process-grid.is-visible .process-line i{width:100%;}
+.proc-step{padding:0 24px 0 0;position:relative;}
+.proc-dot{width:13px;height:13px;border-radius:50%;background:var(--paper);border:2px solid var(--accent);position:relative;z-index:2;margin-bottom:28px;}
+.proc-num{font-family:var(--ff-mono);font-size:12px;color:var(--on-light-muted);letter-spacing:.08em;}
+.proc-step h3{font-family:var(--ff-head);font-weight:800;font-size:19px;margin:12px 0 10px;}
+.proc-step p{font-size:14px;color:var(--on-light-muted);line-height:1.55;max-width:250px;}
+
+/* =====================================================
+   11. GALLERY
+   ===================================================== */
+.gallery{background:var(--ink);color:var(--on-dark);}
+.gal-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;}
+.filter-btn{font-family:var(--ff-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:10px 18px;border-radius:100px;border:1px solid var(--line-dark);background:transparent;color:var(--on-dark-muted);cursor:pointer;transition:.3s var(--ease);}
+.filter-btn:hover{color:var(--on-dark);border-color:var(--on-dark);}
+.filter-btn.is-active{background:var(--accent-bg);border-color:var(--accent-bg);color:var(--ink);}
+.gal-grid{columns:4 260px;column-gap:16px;}
+.gal-tile{position:relative;display:block;break-inside:avoid;margin-bottom:16px;border-radius:var(--r-m);overflow:hidden;background:linear-gradient(155deg,var(--ink-3),var(--ink-2));transition:opacity .4s;}
+.gal-tile.is-hidden{display:none;}
+.gal-carousel{position:relative;}
+.gal-photo{display:none;width:100%;height:auto;opacity:1;transition:opacity .28s var(--ease);}
+.gal-photo.is-active{display:block;}
+.gal-photo.is-fading{opacity:0;}
+.gal-nav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:rgba(18,24,29,.6);border:1px solid var(--line-dark);color:var(--on-dark);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .3s,background .3s;z-index:2;}
+.gal-tile:hover .gal-nav{opacity:1;}
+.gal-nav.is-hidden{display:none;}
+.gal-nav:hover{background:var(--accent-bg);color:var(--ink);border-color:var(--accent-bg);}
+.gal-nav .ic{width:16px;height:16px;}
+.gal-nav-prev{left:10px;}
+.gal-nav-next{right:10px;}
+.gal-dots{position:absolute;left:0;right:0;top:12px;display:flex;justify-content:center;gap:6px;z-index:2;}
+.gal-dots.is-hidden{display:none;}
+.gal-dots span{width:6px;height:6px;border-radius:50%;background:rgba(236,238,232,.45);transition:.3s;}
+.gal-dots span.is-active{background:var(--on-dark);width:16px;border-radius:3px;}
+.gal-caption{position:absolute;left:0;right:0;bottom:0;padding:18px;background:linear-gradient(0deg,rgba(18,24,29,.9),transparent);transform:translateY(8px);opacity:.85;transition:.4s var(--ease);pointer-events:none;}
+.gal-caption b{display:block;font-family:var(--ff-head);font-weight:700;font-size:15px;}
+.gal-caption span{font-family:var(--ff-mono);font-size:10.5px;color:var(--on-dark-muted);text-transform:uppercase;letter-spacing:.06em;}
+.gal-tile:hover .gal-caption{transform:translateY(0);opacity:1;}
+
+/* =====================================================
+   12. TESTIMONIALS
+   ===================================================== */
+.testi{background:var(--paper);}
+.testi-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:50px;}
+.testi-nav{display:flex;gap:10px;}
+.testi-btn{width:46px;height:46px;border-radius:50%;border:1px solid var(--line-light);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.3s;}
+.testi-btn:hover{background:var(--ink);color:var(--on-dark);}
+.testi-btn .ic{width:16px;height:16px;}
+.testi-viewport{overflow:hidden;border-radius:var(--r-m);}
+.testi-track{display:flex;transition:transform .6s var(--ease);}
+.testi-card{min-width:100%;background:var(--ink);color:var(--on-dark);padding:60px;display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;}
+.testi-quote-ic{width:44px;height:44px;color:var(--on-dark);}
+.testi-stars{display:flex;gap:4px;color:#FFC107;margin-bottom:20px;}
+.testi-stars .ic{width:15px;height:15px;fill:currentColor;}
+.testi-card p{font-family:var(--ff-head);font-weight:500;font-size:clamp(18px,2vw,24px);line-height:1.4;}
+.testi-who{margin-top:24px;font-family:var(--ff-mono);font-size:12px;color:var(--on-dark-muted);text-transform:uppercase;letter-spacing:.06em;}
+.testi-dots{display:flex;gap:8px;justify-content:center;margin-top:24px;}
+.testi-dots button{width:8px;height:8px;border-radius:50%;border:none;background:var(--line-light);cursor:pointer;padding:0;transition:.3s;}
+.testi-dots button.is-active{background:var(--accent-bg);width:22px;border-radius:5px;}
+
+/* =====================================================
+   13. BRANDS STRIP
+   ===================================================== */
+.brands{background:var(--paper-2);padding:56px 0;}
+.brands-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:26px;}
+.brands-row p{font-family:var(--ff-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--on-light-muted);max-width:220px;}
+.brand-chips{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.brand-chips span{font-family:var(--ff-head);font-weight:800;font-size:19px;color:var(--on-light-muted);padding:10px 20px;border:1px solid var(--line-light);border-radius:100px;transition:.3s;}
+.brand-chips span:hover{color:var(--on-light);border-color:var(--on-light);}
+.brand-chips .brand-logo{display:flex;align-items:center;justify-content:center;padding:10px 20px;border:1px solid var(--line-light);border-radius:100px;transition:border-color .3s;}
+.brand-chips .brand-logo:hover{border-color:var(--on-light);}
+.brand-chips .brand-logo img{height:24px;width:auto;max-width:120px;object-fit:contain;}
+
+/* =====================================================
+   14. CONTACT
+   ===================================================== */
+.contact{background:var(--ink);color:var(--on-dark);}
+.contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:70px;}
+.info-card{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--line-dark);}
+.info-card .ic{width:20px;height:20px;color:var(--on-dark);flex:none;margin-top:3px;}
+.info-card h4{font-family:var(--ff-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--on-dark-muted);margin-bottom:6px;}
+.info-card p, .info-card a{font-family:var(--ff-head);font-weight:600;font-size:16.5px;}
+.socials{display:flex;gap:10px;margin-top:28px;}
+.socials a{width:42px;height:42px;border-radius:50%;border:1px solid var(--line-dark);display:flex;align-items:center;justify-content:center;transition:.3s;}
+.socials a:hover{background:var(--accent-bg);color:var(--ink);border-color:var(--accent-bg);}
+.socials .ic{width:17px;height:17px;}
+
+.form-card{background:var(--ink-2);border:1px solid var(--line-dark);border-radius:var(--r-l);padding:44px;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.f-group{margin-bottom:20px;}
+.f-group label{display:block;font-family:var(--ff-mono);font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--on-dark-muted);margin-bottom:9px;}
+.f-group input,.f-group select,.f-group textarea{
+  width:100%;background:var(--ink);border:1px solid var(--line-dark);border-radius:var(--r-s);
+  padding:13px 16px;color:var(--on-dark);font-family:var(--ff-body);font-size:15px;transition:border-color .3s;}
+.f-group input:focus,.f-group select:focus,.f-group textarea:focus{outline:none;border-color:var(--accent-dim);}
+.f-group textarea{resize:vertical;min-height:110px;}
+.f-hp{position:absolute;left:-9999px;opacity:0;height:0;width:0;}
+.form-msg{margin-top:16px;font-family:var(--ff-mono);font-size:13px;padding:14px 16px;border-radius:var(--r-s);display:none;}
+.form-msg.is-ok{display:block;background:rgba(255,90,43,.12);border:1px solid var(--accent-dim);color:var(--on-dark);}
+.form-msg.is-err{display:block;background:rgba(255,90,43,.06);border:1px solid var(--line-dark);color:var(--on-dark-muted);}
+
+/* =====================================================
+   15. FOOTER
+   ===================================================== */
+.footer{background:#0D1216;color:#AEB4B9;padding:70px 0 26px;}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-bottom:50px;border-bottom:1px solid var(--line-dark);}
+.footer-brand p{max-width:280px;margin-top:16px;font-size:14px;}
+.footer-col h5{font-family:var(--ff-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--on-dark);margin-bottom:18px;}
+.footer-col a{display:block;font-size:14.5px;padding:6px 0;transition:color .3s;}
+.footer-col a:hover{color:var(--on-dark);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:24px;flex-wrap:wrap;gap:14px;font-size:13px;}
+.footer-bottom .legal-links{display:flex;gap:20px;}
+
+/* =====================================================
+   16. BACK TO TOP
+   ===================================================== */
+.totop{position:fixed;right:24px;bottom:24px;width:50px;height:50px;border-radius:50%;background:var(--accent-bg);color:var(--ink);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:400;opacity:0;pointer-events:none;transform:translateY(10px);transition:.4s var(--ease);}
+.totop.is-visible{opacity:1;pointer-events:auto;transform:translateY(0);}
+.totop .ic{width:18px;height:18px;}
+
+/* =====================================================
+   17. RESPONSIVE
+   ===================================================== */
+@media (max-width: 980px){
+  .nav-desktop{display:none;}
+  .burger{display:flex;}
+  .hero{padding-top:120px;}
+  .hero-grid{grid-template-columns:1fr;}
+  .svc-grid{grid-template-columns:1fr 1fr;}
+  .exp-grid{grid-template-columns:1fr;gap:40px;}
+  .process-grid{grid-template-columns:1fr 1fr;row-gap:40px;}
+  .process-line{display:none;}
+  .gal-grid{columns:2 200px;}
+  .contact-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;row-gap:36px;}
+  .testi-card{grid-template-columns:1fr;padding:40px;}
+}
+@media (max-width: 620px){
+  .wrap{padding:0 20px;}
+  .sec-pad{padding:80px 0;}
+  .svc-grid{grid-template-columns:1fr;}
+  .gal-grid{columns:1;}
+  .f-row{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .form-card{padding:26px;}
+  .testi-card{padding:28px;}
+  .hero-stats{gap:22px;}
+  .brands-row{flex-direction:column;align-items:flex-start;}
+}
+
+/* =====================================================
+   18. REDUCED MOTION
+   ===================================================== */
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  .reveal{transition:opacity .4s linear;transform:none;}
+  .marquee-track{animation:none;}
+  .loader,.loader-slat,.hero-shutter{transition-duration:.2s;}
+}
+</style>
+</head>
+<body>
+
+<!-- ICON SPRITE -->
+<svg style="display:none">
+  <symbol id="ic-shutter" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="13" x2="21" y2="13"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="ic-store" viewBox="0 0 24 24"><path d="M3 8l2-5h14l2 5"/><path d="M3 8h18"/><path d="M5 8v3a2 2 0 0 0 4 0V8"/><path d="M9 8v3a2 2 0 0 0 4 0V8"/><path d="M13 8v3a2 2 0 0 0 4 0V8"/><path d="M17 8v3a2 2 0 0 0 4 0V8"/></symbol>
+  <symbol id="ic-motor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+  <symbol id="ic-gate" viewBox="0 0 24 24"><line x1="4" y1="4" x2="4" y2="20"/><line x1="20" y1="4" x2="20" y2="20"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="18" x2="20" y2="18"/><line x1="8" y1="6" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="18"/></symbol>
+  <symbol id="ic-garage" viewBox="0 0 24 24"><path d="M3 21V10L12 3l9 7v11"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="16" x2="21" y2="16"/><circle cx="15" cy="18" r=".6" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="ic-window" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="4" y1="12" x2="20" y2="12"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24"><path d="M6 18L18 6M9 6h9v9"/></symbol>
+  <symbol id="ic-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="ic-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6l9 7 9-7"/></symbol>
+  <symbol id="ic-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.6 7-11.5A7 7 0 0 0 5 9.5C5 14.4 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></symbol>
+  <symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="ic-insta" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="ic-fb" viewBox="0 0 24 24"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2a1 1 0 0 1 1-1z"/></symbol>
+  <symbol id="ic-linkedin" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="7.5" y1="10" x2="7.5" y2="17"/><circle cx="7.5" cy="7" r="1" fill="currentColor" stroke="none"/><path d="M11 17v-4.5a2 2 0 0 1 4 0V17"/><line x1="11" y1="10" x2="11" y2="17"/></symbol>
+  <symbol id="ic-star" viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8L18.4 21 12 17.3 5.6 21l1.6-6.9L2 9.3l7-.8z"/></symbol>
+  <symbol id="ic-quote" viewBox="0 0 24 24"><path d="M4 10c0-3.3 2-5.5 6-6l.6 2c-2.4.6-3.4 1.8-3.5 3.3H10a2.3 2.3 0 0 1 0 4.6H6.3A2.3 2.3 0 0 1 4 11.6z"/><path d="M13 10c0-3.3 2-5.5 6-6l.6 2c-2.4.6-3.4 1.8-3.5 3.3H19a2.3 2.3 0 0 1 0 4.6h-3.7a2.3 2.3 0 0 1-2.3-2.3z"/></symbol>
+  <symbol id="ic-plus" viewBox="0 0 24 24"><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></symbol>
+  <symbol id="ic-close" viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></symbol>
+  <symbol id="ic-menu" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></symbol>
+  <symbol id="ic-chev-l" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="ic-chev-r" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="ic-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+</svg>
+
+
+<!-- PRELOADER -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-shutter" id="loaderShutter"></div>
+  <div class="loader-info">
+    <span class="loader-pct" id="loaderPct">0%</span>
+    <span class="loader-label">Ouverture du volet…</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header" id="header">
+  <div class="wrap">
+    <a href="#hero" class="brand">
+      <img src="images/logo.png" alt="FSA — Fenêtres, Stores & Agencements" class="brand-logo-img">
+      <span class="brand-mark">FS<span>A</span></span>
+      <span class="brand-tag"><span class="brand-tag-blue">Fenêtres Stores</span><br><span class="brand-tag-red">Agencements</span></span>
+    </a>
+    <nav class="nav-desktop">
+      <div class="nav-links">
+        <a href="#prestations">Prestations</a>
+        <a href="#realisations">Réalisations</a>
+        <a href="#expertise">Pourquoi FSA</a>
+        <a href="#avis">Avis</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-cta">
+        <a href="#contact" class="btn btn-accent">Devis gratuit <svg class="ic"><use href="#ic-arrow"/></svg></a>
+      </div>
+    </nav>
+    <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu">
+      <svg class="ic"><use href="#ic-menu"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE NAV -->
+<nav class="nav-mobile" id="navMobile">
+  <a href="#prestations">Prestations</a>
+  <a href="#realisations">Réalisations</a>
+  <a href="#expertise">Pourquoi FSA</a>
+  <a href="#avis">Avis</a>
+  <a href="#contact">Contact</a>
+  <a href="#contact" class="btn btn-accent">Devis gratuit <svg class="ic"><use href="#ic-arrow"/></svg></a>
+</nav>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow hero-eyebrow">Fenêtres · Volets · Stores · Portails</span>
+        <h1>Votre budget mérite<br>des travaux <em>de qualité.</em></h1>
+        <p class="lead">FSA conçoit, fabrique et pose vos fenêtres, volets roulants, stores, portails et portes de garage — sur mesure, motorisés, pensés pour durer.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-accent">Demander un devis gratuit <svg class="ic"><use href="#ic-arrow"/></svg></a>
+          <a href="#realisations" class="btn btn-ghost-dark">Voir nos réalisations</a>
+        </div>
+        <div class="hero-stats">
+          <div><b data-count="36">0</b><span>Ans d'expérience</span></div>
+          <div><b data-count="200">0</b><span>Chantiers réalisés</span></div>
+          <div><b data-count="100">0</b><span>% sur mesure</span></div>
+          <div><b data-count="10">0</b><span>Ans de garantie</span></div>
+        </div>
+      </div>
+      <div class="hero-visual" id="heroVisual">
+        <img class="hero-photo" src="images/hero.jpg" alt="Réalisation FSA — volet roulant motorisé">
+        <div class="hero-shutter" id="heroShutter"></div>
+        <button class="hero-toggle" id="heroToggle">
+          <svg class="ic"><use href="#ic-shutter"/></svg> Fermer / Ouvrir
+        </button>
+        <span class="hero-caption">Volet roulant — motorisation 20Nm</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>Volets roulants</span><span>Stores intérieur & extérieur</span><span>Motorisation</span><span>Portails</span><span>Portes de garage</span><span>Fenêtres sur mesure</span>
+      <span>Volets roulants</span><span>Stores intérieur & extérieur</span><span>Motorisation</span><span>Portails</span><span>Portes de garage</span><span>Fenêtres sur mesure</span>
+    </div>
+  </div>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="services sec-pad" id="prestations">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Nos prestations</span>
+        <h2>Tout ce qui ferme, ouvre et protège votre maison.</h2>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card reveal" style="--d:0">
+          <span class="svc-num">01</span>
+          <div class="svc-icon"><svg class="ic"><use href="#ic-shutter"/></svg></div>
+          <h3>Volets roulants</h3>
+          <p class="svc-desc">Alu, PVC ou bois — manuels ou motorisés, avec ou sans rénovation, pour une isolation et une sécurité renforcées.</p>
+          <a href="#contact" class="svc-link">Demander un devis <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        </div>
+        <div class="svc-card reveal" style="--d:1">
+          <span class="svc-num">02</span>
+          <div class="svc-icon"><svg class="ic"><use href="#ic-store"/></svg></div>
+          <h3>Stores</h3>
+          <p class="svc-desc">Stores bannes, vénitiens, plissés ou brise-soleil orientables : contrôlez lumière et chaleur, à l'intérieur comme à l'extérieur.</p>
+          <a href="#contact" class="svc-link">Demander un devis <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        </div>
+        <div class="svc-card reveal" style="--d:2">
+          <span class="svc-num">03</span>
+          <div class="svc-icon"><svg class="ic"><use href="#ic-motor"/></svg></div>
+          <h3>Motorisation</h3>
+          <p class="svc-desc">Radio, filaire ou solaire, pilotable à distance : équipez vos volets, stores et portails d'une motorisation fiable et silencieuse.</p>
+          <a href="#contact" class="svc-link">Demander un devis <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        </div>
+        <div class="svc-card reveal" style="--d:0">
+          <span class="svc-num">04</span>
+          <div class="svc-icon"><svg class="ic"><use href="#ic-gate"/></svg></div>
+          <h3>Portails</h3>
+          <p class="svc-desc">Battants ou coulissants, en aluminium sur mesure, avec motorisation et contrôle d'accès pour sécuriser votre entrée.</p>
+          <a href="#contact" class="svc-link">Demander un devis <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        </div>
+        <div class="svc-card reveal" style="--d:1">
+          <span class="svc-num">05</span>
+          <div class="svc-icon"><svg class="ic"><use href="#ic-garage"/></svg></div>
+          <h3>Portes de garage</h3>
+          <p class="svc-desc">Sectionnelles, basculantes ou enroulables, motorisées et isolées, assorties à votre façade et à vos portails.</p>
+          <a href="#contact" class="svc-link">Demander un devis <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        </div>
+        <div class="svc-card reveal" style="--d:2">
+          <span class="svc-num">06</span>
+          <div class="svc-icon"><svg class="ic"><use href="#ic-window"/></svg></div>
+          <h3>Fenêtres</h3>
+          <p class="svc-desc">PVC, aluminium ou bois, battantes ou coulissantes, en neuf comme en rénovation, pour un confort thermique et phonique durable.</p>
+          <a href="#contact" class="svc-link">Demander un devis <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="dim-line" id="dimLine1"><span class="tick"></span><span class="bar"></span><small>Chaque projet est mesuré, dessiné, fabriqué sur mesure</small><span class="bar"></span><span class="tick"></span></div>
+
+  <!-- ============ EXPERTISE / STATS ============ -->
+  <section class="expertise sec-pad" id="expertise">
+    <div class="wrap exp-grid">
+      <div>
+        <span class="eyebrow">Pourquoi FSA</span>
+        <h2 style="font-family:var(--ff-display);font-size:clamp(28px,3.6vw,44px);margin-top:16px;line-height:1.05;">Un artisan qui mesure, fabrique et pose — sans sous-traitance.</h2>
+        <div class="exp-list">
+          <div class="exp-item reveal" style="--d:0">
+            <svg class="ic"><use href="#ic-check"/></svg>
+            <div><h4>Devis gratuit & conseil personnalisé</h4><p>Un conseiller se déplace chez vous pour évaluer votre projet et vous orienter vers la solution adaptée, sans engagement.</p></div>
+          </div>
+          <div class="exp-item reveal" style="--d:1">
+            <svg class="ic"><use href="#ic-check"/></svg>
+            <div><h4>Fabrication et pose sur mesure</h4><p>Chaque fenêtre, volet ou portail est pris aux cotes exactes de votre ouverture, pour un ajustement parfait.</p></div>
+          </div>
+          <div class="exp-item reveal" style="--d:2">
+            <svg class="ic"><use href="#ic-check"/></svg>
+            <div><h4>Marques reconnues du secteur</h4><p>Motorisations et mécanismes compatibles avec les grandes marques du marché (Somfy, Franciaflex, Picard…).</p></div>
+          </div>
+          <div class="exp-item reveal" style="--d:3">
+            <svg class="ic"><use href="#ic-check"/></svg>
+            <div><h4>SAV réactif</h4><p>Une équipe disponible après la pose pour l'entretien, le réglage ou la réparation de vos équipements.</p></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="stat-grid">
+          <div class="stat-card reveal" style="--d:0"><span class="stat-num" data-count="36">0</span><div class="stat-label">Années d'expertise</div></div>
+          <div class="stat-card reveal" style="--d:1"><span class="stat-num" data-count="200">0</span><div class="stat-label">Chantiers réalisés</div></div>
+          <div class="stat-card reveal" style="--d:2"><span class="stat-num" data-count="100">0</span><div class="stat-label">% clients satisfaits</div></div>
+          <div class="stat-card reveal" style="--d:3"><span class="stat-num" data-count="10">0</span><div class="stat-label">Ans de garantie</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section class="sec-pad" id="process-section">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Notre méthode</span>
+        <h2>De la prise de mesure à la pose, en 4 étapes.</h2>
+      </div>
+      <div class="process-grid" id="processGrid">
+        <div class="process-line"><i></i></div>
+        <div class="proc-step reveal" style="--d:0">
+          <div class="proc-dot"></div>
+          <span class="proc-num">01</span>
+          <h3>Devis gratuit</h3>
+          <p>Un échange avec un conseiller FSA pour comprendre votre projet et estimer le budget, sans engagement.</p>
+        </div>
+        <div class="proc-step reveal" style="--d:1">
+          <div class="proc-dot"></div>
+          <span class="proc-num">02</span>
+          <h3>Prise de mesures</h3>
+          <p>Passage sur site pour relever les cotes exactes de vos ouvertures et affiner la solution technique.</p>
+        </div>
+        <div class="proc-step reveal" style="--d:2">
+          <div class="proc-dot"></div>
+          <span class="proc-num">03</span>
+          <h3>Fabrication & pose</h3>
+          <p>Fabrication sur mesure puis installation par nos équipes, dans le respect des délais annoncés.</p>
+        </div>
+        <div class="proc-step reveal" style="--d:3">
+          <div class="proc-dot"></div>
+          <span class="proc-num">04</span>
+          <h3>Suivi & SAV</h3>
+          <p>Contrôle final, remise des garanties, et une équipe disponible en cas de besoin après travaux.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="dim-line" id="dimLine2"><span class="tick"></span><span class="bar"></span><small>200+ ouvertures posées partout en France</small><span class="bar"></span><span class="tick"></span></div>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="gallery sec-pad" id="realisations">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Réalisations</span>
+        <h2>Des chantiers pensés pour durer.</h2>
+      </div>
+      <div class="gal-filters" id="galFilters">
+        <button class="filter-btn is-active" data-filter="tous">Tous</button>
+        <button class="filter-btn" data-filter="volet">Volets roulants</button>
+        <button class="filter-btn" data-filter="store">Stores</button>
+        <button class="filter-btn" data-filter="portail">Portails</button>
+        <button class="filter-btn" data-filter="garage">Portes de garage</button>
+        <button class="filter-btn" data-filter="fenetre">Fenêtres</button>
+      </div>
+      <div class="gal-grid" id="galGrid">
+        <div class="gal-tile reveal" style="--d:0" data-cat="volet">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-1.png" alt="Volet roulant solaires — Rénovation énergétique">
+            <!-- Ajoutez ici d'autres <img class="gal-photo"> pour faire défiler plusieurs photos dans cette même case -->
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Volet roulant solaires</b><span>Rénovation énergétique</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:1" data-cat="fenetre">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-2.png" alt="Fenêtres PVC — Double vitrage">
+            <img class="gal-photo" src="images/realisation-10.png" alt="Fenêtres PVC — Double vitrage">
+            <img class="gal-photo" src="images/realisation-12.png" alt="Fenêtres PVC — Double vitrage">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Fenêtres PVC</b><span>Double vitrage</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:2" data-cat="portail">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-3.png" alt="Portail coulissant — Motorisé, propriété privée">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Portail coulissant</b><span>Motorisé — propriété privée</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:0" data-cat="store">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-4.png" alt="Store banne — Balcon">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Store banne</b><span>Balcon</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:1" data-cat="garage">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-5.png" alt="Porte de garage">
+            <img class="gal-photo" src="images/realisation-11.png" alt="porte de garage sectionnelle">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Porte de garage</b><span>Motorisée — parking</span></div>
+          
+        </div>
+        <div class="gal-tile reveal" style="--d:2" data-cat="volet">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-6.png" alt="Porte de maison — Rénovation, maison individuelle">
+            <img class="gal-photo" src="images/realisation-9.png" alt="Porte de maison">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Porte de maison</b><span>Rénovation — maison individuelle</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:0" data-cat="fenetre">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-7.png" alt="Baie vitrée — Extension, séjour">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Baie vitrée</b><span>Extension — séjour</span></div>
+        </div>
+        <div class="gal-tile reveal" style="--d:1" data-cat="portail">
+          <div class="gal-carousel">
+            <img class="gal-photo is-active" src="images/realisation-8.png" alt="Extension vitrée — PVC, sur mesure">
+          </div>
+          <button class="gal-nav gal-nav-prev" aria-label="Photo précédente"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="gal-nav gal-nav-next" aria-label="Photo suivante"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+          <div class="gal-dots"></div>
+          <div class="gal-caption"><b>Extension vitrée</b><span>PVC — sur mesure</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="testi sec-pad" id="avis">
+    <div class="wrap">
+      <div class="testi-head reveal">
+        <div>
+          <span class="eyebrow">Avis clients</span>
+          <h2 style="font-family:var(--ff-display);font-size:clamp(28px,3.6vw,44px);margin-top:16px;">Ce que nos clients en disent.</h2>
+        </div>
+        <div class="testi-nav">
+          <button class="testi-btn" id="testiPrev" aria-label="Avis précédent"><svg class="ic"><use href="#ic-chev-l"/></svg></button>
+          <button class="testi-btn" id="testiNext" aria-label="Avis suivant"><svg class="ic"><use href="#ic-chev-r"/></svg></button>
+        </div>
+      </div>
+      <div class="testi-viewport">
+        <div class="testi-track" id="testiTrack">
+          <div class="testi-card">
+            <svg class="testi-quote-ic"><use href="#ic-quote"/></svg>
+            <div>
+              <div class="testi-stars">★★★★★</div>
+              <p>« Excellent travail de toute l’équipe de FSA Fenêtre Store Agencement !
+Merci à Mattias et Seb pour leur professionnalisme, leurs conseils et leur sérieux. Travail propre et soigné, je recommande sans hésiter !»</p>
+              <div class="testi-who">Mathieu Nova</div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <svg class="testi-quote-ic"><use href="#ic-quote"/></svg>
+            <div>
+              <div class="testi-stars">★★★★★</div>
+              <p>« Merci encore, satisfait de vos services, personnels sympathiques à recommander, travail propre et soigné. Rien à dire. »</p>
+              <div class="testi-who">fourn gerard</div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <svg class="testi-quote-ic"><use href="#ic-quote"/></svg>
+            <div>
+              <div class="testi-stars">★★★★★</div>
+              <p>« Excellent travail très pro et à des tarifs qui ne sont pas abusés. Merci »</p>
+              <div class="testi-who">yves Breem</div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <svg class="testi-quote-ic"><use href="#ic-quote"/></svg>
+            <div>
+              <div class="testi-stars">★★★★★</div>
+              <p>« Sébastien et Mathias sont très sérieux et compétents. Équipe au top. Je recommande »</p>
+              <div class="testi-who">Nicole Blois</div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <svg class="testi-quote-ic"><use href="#ic-quote"/></svg>
+            <div>
+              <div class="testi-stars">★★★★★</div>
+              <p>« Merci pour ce professionnalisme et la réactivité avec ce froid des derniers jours pour le remplacement d'une fenêtre et de trois volets électriques »</p>
+              <div class="testi-who">Kevin Gauthier</div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <svg class="testi-quote-ic"><use href="#ic-quote"/></svg>
+            <div>
+              <div class="testi-stars">★★★★★</div>
+              <p>« Voilà plusieurs chantiers accomplis chez moi (doubles- vitrages et stores), et je suis tres satisfaite du travail très "pro, ". Delai, disponibilité et precision du travail. Merci ! »</p>
+              <div class="testi-who">Marielle Billy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-dots" id="testiDots"></div>
+    </div>
+  </section>
+
+  <!-- ============ BRANDS ============ -->
+  <section class="brands">
+    <div class="wrap brands-row">
+      <p>Nous posons et motorisons avec les plus grandes marques du secteur</p>
+      <div class="brand-chips">
+        <span class="brand-logo"><img src="images/somfy.png" alt="Somfy"></span>
+        <span class="brand-logo"><img src="images/picard.png" alt="Picard"></span>
+        <span class="brand-logo"><img src="images/franciaflex.png" alt="Franciaflex"></span>
+        <span class="brand-logo"><img src="images/zilten.png" alt="Zilten"></span>
+        <span class="brand-logo"><img src="images/meo.png" alt="Méo"></span>
+        <span class="brand-logo"><img src="images/alur.png" alt="Alur"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="contact sec-pad" id="contact">
+    <div class="wrap contact-grid">
+      <div>
+        <span class="eyebrow">Contact</span>
+        <h2 style="font-family:var(--ff-display);font-size:clamp(28px,3.6vw,44px);margin-top:16px;line-height:1.05;">Parlons de votre projet.</h2>
+        <p style="color:var(--on-dark-muted);margin-top:16px;max-width:420px;">Devis gratuit et sans engagement. Nous revenons vers vous sous 24 à 48h ouvrées.</p>
+
+        <div class="info-card">
+          <svg class="ic"><use href="#ic-pin"/></svg>
+          <div><h4>Adresse</h4><p>15 Avenue de Normandie, 91130 Ris-Orangis, France.</p></div>
+        </div>
+        <div class="info-card">
+          <svg class="ic"><use href="#ic-phone"/></svg>
+          <div><h4>Téléphone</h4><a href="tel:+33100000000">Mathias : 06 80 74 49 71 - Sébastien : 06 87 50 52 72</a></div>
+        </div>
+        <div class="info-card">
+          <svg class="ic"><use href="#ic-mail"/></svg>
+          <div><h4>Email</h4><a href="mailto:contact@fsa-fermetures.fr">contact.fsa91@gmail.com</a></div>
+        </div>
+        <div class="info-card">
+          <svg class="ic"><use href="#ic-clock"/></svg>
+          <div><h4>Horaires</h4><p>Lun–Ven 9h-19h</p></div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <form id="contactForm" novalidate>
+          <div class="f-row">
+            <div class="f-group">
+              <label for="f-name">Nom complet</label>
+              <input type="text" id="f-name" name="name" required placeholder="Jean Dupont">
+            </div>
+            <div class="f-group">
+              <label for="f-phone">Téléphone</label>
+              <input type="tel" id="f-phone" name="phone" required placeholder="06 12 34 56 78">
+            </div>
+          </div>
+          <div class="f-row">
+            <div class="f-group">
+              <label for="f-email">Email</label>
+              <input type="email" id="f-email" name="email" required placeholder="jean.dupont@email.fr">
+            </div>
+            <div class="f-group">
+              <label for="f-project">Type de projet</label>
+              <select id="f-project" name="project">
+                <option>Volet roulant</option>
+                <option>Store</option>
+                <option>Motorisation</option>
+                <option>Portail</option>
+                <option>Porte de garage</option>
+                <option>Fenêtres</option>
+                <option>Autre / plusieurs projets</option>
+              </select>
+            </div>
+          </div>
+          <div class="f-group">
+            <label for="f-message">Votre message</label>
+            <textarea id="f-message" name="message" required placeholder="Décrivez votre projet, vos dimensions approximatives, votre secteur…"></textarea>
+          </div>
+          <!-- champ piège anti-spam -->
+          <input class="f-hp" type="text" name="societe" tabindex="-1" autocomplete="off">
+          <button type="submit" class="btn btn-accent">Envoyer ma demande <svg class="ic"><use href="#ic-arrow"/></svg></button>
+          <div class="form-msg" id="formMsg"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="brand-mark" style="color:var(--on-dark)">FS<span style="color:#508eec">A</span></span>
+        <p>Fenêtres, Stores & Agencements — fermetures sur mesure, fabriquées et posées par nos équipes.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Prestations</h5>
+        <a href="#prestations">Volets roulants</a>
+        <a href="#prestations">Stores</a>
+        <a href="#prestations">Motorisation</a>
+        <a href="#prestations">Portails</a>
+        <a href="#prestations">Portes de garage</a>
+        <a href="#prestations">Fenêtres</a>
+      </div>
+      <div class="footer-col">
+        <h5>Entreprise</h5>
+        <a href="#expertise">Pourquoi FSA</a>
+        <a href="#realisations">Réalisations</a>
+        <a href="#avis">Avis clients</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Légal</h5>
+        <a href="mentions-legales.html">Mentions légales</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> FSA — Fenêtres Stores Agencements. Tous droits réservés.</span>
+      <span>© <span id="year"></span> Sicreete 2026</span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="totopBtn" aria-label="Retour en haut"><svg class="ic"><use href="#ic-up"/></svg></button>
+
+<script>
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+ 
+  /* ---------- Build preloader + hero shutter slats ---------- */
+  function buildSlats(container, count){
+    var frag = document.createDocumentFragment();
+    for(var i=0;i<count;i++){
+      var s = document.createElement('div');
+      s.className = container.id === 'loaderShutter' ? 'loader-slat' : 'hero-slat';
+      s.style.setProperty('--i', i);
+      frag.appendChild(s);
+    }
+    container.appendChild(frag);
+  }
+  var loaderShutter = document.getElementById('loaderShutter');
+  var heroShutter = document.getElementById('heroShutter');
+  buildSlats(loaderShutter, 14);
+  buildSlats(heroShutter, 10);
+
+  /* ---------- Preloader logic ---------- */
+  var loader = document.getElementById('loader');
+  var pctEl = document.getElementById('loaderPct');
+  document.body.style.overflow = 'hidden';
+
+  function openLoader(){
+    loader.classList.add('is-open');
+    setTimeout(function(){
+      if(loader && loader.parentNode){ loader.parentNode.removeChild(loader); }
+      document.body.style.overflow = '';
+    }, 1100);
+  }
+
+  var visited = false;
+  try{ visited = sessionStorage.getItem('fsaVisited'); sessionStorage.setItem('fsaVisited','1'); }catch(e){}
+
+  if(visited || reduceMotion){
+    pctEl.textContent = '100%';
+    setTimeout(openLoader, 150);
+  } else {
+    var pct = 0;
+    var timer = setInterval(function(){
+      pct += Math.round(3 + Math.random()*7);
+      if(pct >= 100){ pct = 100; clearInterval(timer); setTimeout(openLoader, 260); }
+      pctEl.textContent = pct + '%';
+    }, 45);
+  }
+
+  /* ---------- (curseur personnalisé retiré — curseur natif du navigateur) ---------- */
+
+  /* ---------- Header scroll state ---------- */
+  var header = document.getElementById('header');
+  var totop = document.getElementById('totopBtn');
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY;
+    header.classList.toggle('is-scrolled', y > 40);
+    totop.classList.toggle('is-visible', y > 500);
+  }, {passive:true});
+
+  totop.addEventListener('click', function(){ window.scrollTo({top:0, behavior: reduceMotion ? 'auto' : 'smooth'}); });
+
+  /* ---------- Mobile nav ---------- */
+  var burger = document.getElementById('burgerBtn');
+  var navMobile = document.getElementById('navMobile');
+  burger.addEventListener('click', function(){
+    var open = navMobile.classList.toggle('is-open');
+    burger.innerHTML = open ? '<svg class="ic"><use href="#ic-close"/></svg>' : '<svg class="ic"><use href="#ic-menu"/></svg>';
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  navMobile.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navMobile.classList.remove('is-open');
+      burger.innerHTML = '<svg class="ic"><use href="#ic-menu"/></svg>';
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ---------- Hero shutter toggle ---------- */
+  var heroVisual = document.getElementById('heroVisual');
+  var heroToggle = document.getElementById('heroToggle');
+  var heroOpen = false;
+  setTimeout(function(){ heroVisual.classList.add('is-open'); heroOpen = true; }, 1400);
+  heroToggle.addEventListener('click', function(){
+    heroOpen = !heroOpen;
+    heroVisual.classList.toggle('is-open', heroOpen);
+  });
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = document.querySelectorAll('.reveal, .dim-line, .process-grid');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        entry.target.classList.toggle('is-visible', entry.isIntersecting);
+      });
+    }, {threshold:0.18});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  /* ---------- Animated counters ---------- */
+  var counters = document.querySelectorAll('[data-count]');
+  if('IntersectionObserver' in window){
+    var cio = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          animateCount(entry.target);
+        } else {
+          entry.target.textContent = '0';
+        }
+      });
+    }, {threshold:0.5});
+    counters.forEach(function(el){ cio.observe(el); });
+  }
+  function animateCount(el){
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    var dur = reduceMotion ? 0 : 1400;
+    if(dur === 0){ el.textContent = target; return; }
+    var start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts-start)/dur, 1);
+      var eased = 1 - Math.pow(1-p, 3);
+      el.textContent = Math.round(eased * target);
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ---------- Gallery filter ---------- */
+  var filterBtns = document.querySelectorAll('.filter-btn');
+  var tiles = document.querySelectorAll('.gal-tile');
+  filterBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      filterBtns.forEach(function(b){ b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      var f = btn.getAttribute('data-filter');
+      tiles.forEach(function(t){
+        var show = (f === 'tous' || t.getAttribute('data-cat') === f);
+        t.classList.toggle('is-hidden', !show);
+      });
+    });
+  });
+
+  /* ---------- Per-tile photo carousels ---------- */
+  tiles.forEach(function(tile){
+    var photos = tile.querySelectorAll('.gal-photo');
+    var prevBtn = tile.querySelector('.gal-nav-prev');
+    var nextBtn = tile.querySelector('.gal-nav-next');
+    var dotsWrap = tile.querySelector('.gal-dots');
+    var idx = 0;
+
+    if(photos.length <= 1){
+      if(prevBtn) prevBtn.classList.add('is-hidden');
+      if(nextBtn) nextBtn.classList.add('is-hidden');
+      if(dotsWrap) dotsWrap.classList.add('is-hidden');
+      return;
+    }
+
+    photos.forEach(function(p, i){
+      var d = document.createElement('span');
+      if(i === 0) d.classList.add('is-active');
+      dotsWrap.appendChild(d);
+    });
+
+    function show(i){
+      var newIdx = (i + photos.length) % photos.length;
+      if(newIdx === idx || tile.dataset.animating) return;
+      var cur = photos[idx];
+      var next = photos[newIdx];
+      var delay = reduceMotion ? 0 : 260;
+      tile.dataset.animating = '1';
+      cur.classList.add('is-fading');
+      setTimeout(function(){
+        cur.classList.remove('is-active');
+        cur.classList.remove('is-fading');
+        next.classList.add('is-active');
+        next.classList.add('is-fading');
+        void next.offsetWidth; // force reflow avant de lancer le fondu d'entrée
+        next.classList.remove('is-fading');
+        idx = newIdx;
+        dotsWrap.querySelectorAll('span').forEach(function(d, di){ d.classList.toggle('is-active', di === idx); });
+        delete tile.dataset.animating;
+      }, delay);
+    }
+
+    if(prevBtn) prevBtn.addEventListener('click', function(e){ e.stopPropagation(); show(idx - 1); });
+    if(nextBtn) nextBtn.addEventListener('click', function(e){ e.stopPropagation(); show(idx + 1); });
+  });
+
+  /* ---------- Testimonials carousel ---------- */
+  var track = document.getElementById('testiTrack');
+  var cards = track.querySelectorAll('.testi-card');
+  var dotsWrap = document.getElementById('testiDots');
+  var idx = 0;
+  cards.forEach(function(_, i){
+    var d = document.createElement('button');
+    if(i===0) d.classList.add('is-active');
+    d.addEventListener('click', function(){ goTo(i); });
+    dotsWrap.appendChild(d);
+  });
+  function goTo(i){
+    idx = (i + cards.length) % cards.length;
+    track.style.transform = 'translateX(-' + (idx*100) + '%)';
+    dotsWrap.querySelectorAll('button').forEach(function(d,di){ d.classList.toggle('is-active', di===idx); });
+  }
+  document.getElementById('testiPrev').addEventListener('click', function(){ goTo(idx-1); });
+  document.getElementById('testiNext').addEventListener('click', function(){ goTo(idx+1); });
+  var autoTesti;
+  function startAuto(){ if(reduceMotion) return; autoTesti = setInterval(function(){ goTo(idx+1); }, 6500); }
+  function stopAuto(){ clearInterval(autoTesti); }
+  startAuto();
+  track.closest('.testi').addEventListener('mouseenter', stopAuto);
+  track.closest('.testi').addEventListener('mouseleave', startAuto);
+
+  /* ---------- Contact form (demo submit) ---------- */
+  var form = document.getElementById('contactForm');
+  var msg = document.getElementById('formMsg');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var honeypot = form.querySelector('[name="societe"]').value;
+    if(honeypot){ return; } // bot détecté, on ignore silencieusement
+
+    var required = form.querySelectorAll('[required]');
+    var valid = true;
+    required.forEach(function(f){
+      if(!f.value.trim()){ valid = false; f.style.borderColor = 'var(--accent-dim)'; }
+      else { f.style.borderColor = 'var(--line-dark)'; }
+    });
+    var emailField = document.getElementById('f-email');
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value.trim());
+    if(!emailOk){ valid = false; emailField.style.borderColor = 'var(--accent-dim)'; }
+
+    msg.className = 'form-msg';
+    if(!valid){
+      msg.classList.add('is-err');
+      msg.textContent = 'Merci de vérifier les champs indiqués avant d\'envoyer votre demande.';
+      return;
+    }
+    // À BRANCHER : remplacez ce bloc par un vrai envoi (Formspree / EmailJS / Netlify Forms)
+    msg.classList.add('is-ok');
+    msg.textContent = 'Merci ! Votre demande a bien été enregistrée. Nous revenons vers vous sous 24 à 48h ouvrées.';
+    form.reset();
+  });
+
+  /* ---------- Footer year ---------- */
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+})();
+</script>
+</body>
+</html>
